@@ -6,7 +6,7 @@ const Message = props => {
     <span className="msg-text">
       {
         props.type.startsWith('system') ?
-          <span>
+          <span className="msg-system">
             User <strong>{ props.name }</strong> has joined the chat
           </span>
           :

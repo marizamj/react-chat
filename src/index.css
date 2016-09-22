@@ -68,15 +68,31 @@ button {
   background: #555;
   line-height: 100px;
   width: 100%;
+  position: relative;
+  z-index: 100;
 }
 
 .header-logo {
+  position: absolute;
   width: 200px;
-  float: left;
+}
+
+.header-exit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100px;
+}
+
+.header-exit:hover {
+  background: #666666;
+  color: #ff3333;
+  cursor: pointer;
+  transition-duration: 0.4s;
 }
 
 .header-username {
-
+  padding-left: 100px;
 }
 
 .userlist {
@@ -122,7 +138,7 @@ button {
 .msg-author {
   margin-left: 15px;
   font-weight: 500;
-  color: red;
+  color: #dd0000;
 }
 
 .msg-date {
@@ -171,6 +187,19 @@ button {
 }
 
 .user--strong {
-  text-decoration: underline;
+  color: #dd0000;
 }
 
+.user--strong:before {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  content: "";
+  background: url(../images/crown.png) no-repeat 0 0;
+  background-size: 100%;
+}
+
+.msg-system {
+  color: #dd0000;
+}

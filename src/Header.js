@@ -6,6 +6,7 @@ class Header extends Component {
       <div className="header">
         <div className="header-logo">Chyatik</div>
         <div className="header-username">Hello, {this.props.name}</div>
+        <div className="header-exit">Exit</div>
       </div>
       :
       <div className="header-login">
@@ -24,5 +25,7 @@ class Header extends Component {
       </div>
   }
 }
+
+window.Header = Header;
 
 export default Header;

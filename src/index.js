@@ -3,7 +3,12 @@ import ReactDOM from 'react-dom';
 import Chat from './Chat';
 import './index.css';
 
-ReactDOM.render(
-  <Chat />,
-  document.getElementById('root')
-);
+fetch('http://localhost:8080/')
+  .then(res => res.json())
+  .then(json => {
+    ReactDOM.render(
+      <Chat { ...json } />,
+      document.getElementById('root')
+    );
+  });
+

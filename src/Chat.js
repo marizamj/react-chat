@@ -5,18 +5,6 @@ import Userlist from './Userlist';
 import Messageslist from './Messageslist';
 import MessageInput from './MessageInput';
 
-
-const db = {
-  error: null,
-  name: '',
-  users: [ { name: 'User1' }, { name: 'User2' } ],
-  messages: [
-    { type: 'chat', author: 'User1', text: 'Vsem privki', date: new Date() },
-   ]
-}
-
-
-
 // function checkName(name, users) {
 //   if (!name.match(/^[!@#\$%\^\&*._-]{10,}$/g)) {
 //     return {
@@ -36,7 +24,23 @@ const db = {
 class Chat extends Component {
   constructor(props) {
     super(props);
-    this.state = db;
+    this.state = this.props;
+  }
+
+  updateChat = () => {
+    fetch('http://localhost:8080/')
+      .then(res => res.json())
+      .then(json => {
+        this.setState({ ...json });
+      });
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.updateChat, 2000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -44,16 +48,27 @@ class Chat extends Component {
 
     if (!name) {
       return <Header error={error} onClick={ (name) => {
+        const newMsg = {
+          type: 'system/user-joined',
+            name: name,
+            author: 'system',
+            date: new Date().valueOf()
+        };
+
         this.setState({
           name,
           users: [ ...users, { name } ],
-          messages: [ {
-            type: 'system/user-joined',
-            name: name,
-            author: 'system',
-            date: new Date()
-          }, ...messages
-        ]})
+          messages: [ newMsg, ...messages ]
+        });
+
+        fetch('http://localhost:8080/login', {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify({ newUser: { name }, newMsg })
+        });
 
       } } />
     }
@@ -68,9 +83,18 @@ class Chat extends Component {
               type: 'chat',
               text,
               author: name,
-              date: new Date()
+              date: new Date().valueOf()
             };
             this.setState({ messages: [ newMsg, ...messages ] });
+
+            fetch('http://localhost:8080/new-message', {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              method: 'POST',
+              body: JSON.stringify({ newMsg })
+            });
           }}
         />
       </div>

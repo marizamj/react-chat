@@ -1,9 +1,10 @@
 function getTime(date) {
+  const d = new Date(date);
 
   function addNulls(n) { return n < 10 ? `0${n}` : n }
 
   return `
-    ${addNulls(date.getHours())}:${addNulls(date.getMinutes())}:${addNulls(date.getSeconds())}
+    ${addNulls(d.getHours())}:${addNulls(d.getMinutes())}:${addNulls(d.getSeconds())}
   `;
 }
 
