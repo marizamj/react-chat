@@ -8,6 +8,16 @@ function getTime(date) {
   `;
 }
 
+function isNameValid(name) {
+  return /^[\w_-]+$/.test(name);
+}
+
+function isRepeat(name, activeUsers) {
+  return activeUsers.find(user => user.name === name);
+}
+
 export {
-  getTime
+  getTime,
+  isNameValid,
+  isRepeat
 }

@@ -5,22 +5,6 @@ import Userlist from './Userlist';
 import Messageslist from './Messageslist';
 import MessageInput from './MessageInput';
 
-// function checkName(name, users) {
-//   if (!name.match(/^[!@#\$%\^\&*._-]{10,}$/g)) {
-//     return {
-//       valid: false,
-//       error: { text: `Name can only contain letters, numbers or ! @ # $ % ^ & * . - _ and it should be 10 symbols or less.` }
-//     };
-//   }
-
-//   const isSameUser = users.find(user => user.name === name);
-
-//   return isSameUser ?
-//     { valid: false, error: { text: `Someone already uses this name. Try another.` }}
-//     :
-//     { valid: true, error: null };
-// }
-
 class Chat extends Component {
   constructor(props) {
     super(props);
@@ -44,10 +28,10 @@ class Chat extends Component {
   }
 
   render() {
-    const { name, users, messages, error } = this.state;
+    const { name, users, messages } = this.state;
 
     if (!name) {
-      return <Header error={error} onClick={ (name) => {
+      return <Header users={users} onClick={ (name) => {
         const newMsg = {
           type: 'system/user-joined',
             name: name,

@@ -29,6 +29,11 @@ button {
   text-align: center;
 }
 
+.login-form {
+  position: relative;
+  /*width: 300px;*/
+}
+
 .login-form * {
   display: block;
   margin: 0 auto;
@@ -48,6 +53,34 @@ button {
   border-radius: 5px;
   border: none;
   font-weight: lighter;
+}
+
+.login-hint {
+  font-size: 18px;
+  position: absolute;
+  width: 220px;
+  top: -100px;
+  left: 50%;
+  margin-left: -110px;
+  background: #222;
+  padding: 10px 10px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 5px #444;
+  opacity: 0;
+}
+
+.login-hint:before {
+  content: '';
+  border: 10px solid transparent;
+  border-top-color: #222;
+  position: absolute;
+  top: 100%;
+  right: 105px;
+}
+
+.visible {
+  opacity: 1;
+  transition: all 0.5s ease-out;
 }
 
 .header-login {
