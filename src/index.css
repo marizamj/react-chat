@@ -117,11 +117,10 @@ button {
   width: 100px;
 }
 
-.header-exit:hover {
-  background: #666666;
-  color: #ff3333;
+.exit-btn:hover {
+  color: #000;
   cursor: pointer;
-  transition-duration: 0.4s;
+  transition-duration: 0.3s;
 }
 
 .header-username {
@@ -217,6 +216,7 @@ button {
 
 .msg-send:hover {
   background: #bbb;
+  transition-duration: 0.3s;
 }
 
 .user--strong {

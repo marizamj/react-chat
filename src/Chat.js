@@ -31,35 +31,50 @@ class Chat extends Component {
     const { name, users, messages } = this.state;
 
     if (!name) {
-      return <Header users={users} onClick={ (name) => {
-        const newMsg = {
-          type: 'system/user-joined',
-            name: name,
-            author: 'system',
-            date: new Date().valueOf()
-        };
+      return <Header
+        users={users}
+        login={ name => {
+          const newMsg = {
+            type: 'system/user-joined',
+              name: name,
+              author: 'system',
+              date: new Date().valueOf()
+          };
 
-        this.setState({
-          name,
-          users: [ ...users, { name } ],
-          messages: [ newMsg, ...messages ]
-        });
+          this.setState({
+            name,
+            users: [ ...users, { name } ],
+            messages: [ newMsg, ...messages ]
+          });
 
-        fetch('http://localhost:8080/login', {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: 'POST',
-          body: JSON.stringify({ newUser: { name }, newMsg })
-        });
-
+          fetch('http://localhost:8080/login', {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({ newUser: { name }, newMsg })
+          });
       } } />
     }
 
     return (
       <div>
-        <Header name={name} />
+        <Header
+          name={name}
+          logout={ () => {
+            const newUsers = users.filter(user => user.name !== name);
+            this.setState({ name: '', users: newUsers });
+            fetch('http://localhost:8080/logout', {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              method: 'POST',
+              body: JSON.stringify({ users: newUsers })
+            });
+          } }
+        />
         <Userlist users={users} currentName={name} />
         <Messageslist messages={messages} />
         <MessageInput onClick={(text) => {

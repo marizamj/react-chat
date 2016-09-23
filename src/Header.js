@@ -26,7 +26,11 @@ class Header extends Component {
       <div className="header">
         <div className="header-logo">Chyatik</div>
         <div className="header-username">Hello, {this.props.name}</div>
-        <div className="header-exit">Exit</div>
+        <div className="header-exit">
+          <span className="exit-btn" onClick={ e => {
+            this.props.logout();
+          } }>Exit</span>
+        </div>
       </div>
       :
       <div className="header-login">
@@ -36,11 +40,11 @@ class Header extends Component {
           <span className={ this.state.hint === 'show' ? "login-hint visible" : "login-hint" } ref="hint">
            { this.state.error }
           </span>
-          <button className="login-btn" onClick={ (e) => {
+          <button className="login-btn" onClick={ e => {
             e.preventDefault();
             const value = this.refs.input.value;
             if (isNameValid(value) && !isRepeat(value, this.props.users)) {
-              this.props.onClick(value);
+              this.props.login(value);
             } else if (isRepeat(value, this.props.users)) {
               this.setError(`User ${value} is already in the chat.`);
             } else {

@@ -30,11 +30,18 @@ app.get('/', cors(corsOptions), function (req, res) {
 });
 
 app.options('/login', cors(corsOptions));
+app.options('/logout', cors(corsOptions));
 app.options('/new-message', cors(corsOptions));
 
 app.post('/login', upload.array(), cors(corsOptions), function(req, res) {
   chat.users.push(req.body.newUser);
   chat.messages.unshift(req.body.newMsg);
+
+  res.json({ status: 'ok' });
+});
+
+app.post('/logout', upload.array(), cors(corsOptions), function(req, res) {
+  chat.users = req.body.users;
 
   res.json({ status: 'ok' });
 });
