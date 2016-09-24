@@ -12,7 +12,7 @@ class Chat extends Component {
   }
 
   updateChat = () => {
-    fetch('http://localhost:8080/')
+    fetch(`http://localhost:8080/?from=${this.state.name}`)
       .then(res => res.json())
       .then(json => {
         this.setState({ ...json });
@@ -36,9 +36,9 @@ class Chat extends Component {
         login={ name => {
           const newMsg = {
             type: 'system/user-joined',
-              name: name,
-              author: 'system',
-              date: new Date().valueOf()
+            name: name,
+            author: 'system',
+            date: new Date().valueOf()
           };
 
           this.setState({

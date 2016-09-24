@@ -36,7 +36,7 @@ class Header extends Component {
       <div className="header-login">
         <form className="login-form">
           <label>What's your name?</label>
-          <input type="text" className="login-input" ref="input" maxLength="10" />
+          <input type="text" className="login-input" ref="input" maxLength="15" autoFocus />
           <span className={ this.state.hint === 'show' ? "login-hint visible" : "login-hint" } ref="hint">
            { this.state.error }
           </span>
