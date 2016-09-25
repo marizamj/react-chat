@@ -1,35 +1,41 @@
 import React, { Component } from 'react';
 import { getTime } from './helpers';
 
-const Message = props => {
-  return <div className="msg-list__item" style={props.style}>
+const Message = ({ name, type, author, date, style, text }) => {
+  const systemMessage = {
+    'system/user-left':
+      <span>
+        User <strong>{ name }</strong> has left the chat
+      </span>,
+
+    'system/user-joined':
+      <span>
+        User <strong>{ name }</strong> has joined the chat
+      </span>
+  };
+
+  return <div className="msg-list__item" style={style}>
     <span className="msg-text">
       {
-        props.type.startsWith('system') ?
+        type.startsWith('system') ?
           <span className="msg-system">
-            User <strong>{ props.name }</strong> has { props.type.match(/\w+\/\w+-(.+)/)[1] } the chat
+            { systemMessage[type] }
           </span>
           :
-          <span>{ props.text }</span>
+          <span>{ text }</span>
       }
     </span>
-    <span className="msg-author">[ {props.author} ]</span>
-    <span className="msg-date">{getTime(props.date)}</span>
+    <span className="msg-author">[ {author} ]</span>
+    <span className="msg-date">{getTime(date)}</span>
   </div>
 }
 
 class Messageslist extends Component {
-  constructor(props) {
-    super(props);
+  state = { height: `${window.innerHeight - 200}px` };
 
-    this.state = { height: `${window.innerHeight - 200}px` };
-
-    this.handleResize = this.handleResize.bind(this);
-  }
-
-  handleResize(e) {
+  handleResize = e => {
     this.setState({ height: `${window.innerHeight - 200}px` });
-  }
+  };
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);

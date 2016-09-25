@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 
 class MessageInput extends Component {
-  constructor(props) {
-    super(props);
+  state = { text: '' };
 
-    this.state = { text: '' };
-
-    this.send = this.send.bind(this);
-  }
-
-  send() {
+  send = () => {
     const { text } = this.state;
 
     if (text) {
       this.props.onClick(text);
       this.setState({ text: '' });
     }
-  }
+  };
 
   render() {
     return <div className="new-msg">

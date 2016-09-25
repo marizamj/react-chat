@@ -5,9 +5,9 @@ import './index.css';
 
 fetch('http://localhost:8080/')
   .then(res => res.json())
-  .then(json => {
+  .then(({ users, messages }) => {
     ReactDOM.render(
-      <Chat { ...json } />,
+      <Chat users={users} messages={messages} />,
       document.getElementById('root')
     );
   });

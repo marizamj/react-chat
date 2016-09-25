@@ -8,7 +8,8 @@ import MessageInput from './MessageInput';
 class Chat extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
+    const { users, messages } = props;
+    this.state = { users, messages };
   }
 
   updateChat = () => {
@@ -17,7 +18,7 @@ class Chat extends Component {
       .then(json => {
         this.setState({ ...json });
       });
-  }
+  };
 
   componentDidMount() {
     this.interval = setInterval(this.updateChat, 2000);
