@@ -24,6 +24,14 @@ const corsOptions = {
 
 function logout(username) {
   chat.users = chat.users.filter(user => user.name !== username);
+
+  chat.messages.unshift({
+    type: 'system/user-left',
+    name: username,
+    author: 'system',
+    date: new Date().valueOf()
+  });
+
   delete timeouts[username];
 }
 
@@ -65,7 +73,7 @@ app.post('/login', upload.array(), cors(corsOptions), function(req, res) {
 });
 
 app.post('/logout', upload.array(), cors(corsOptions), function(req, res) {
-  chat.users = req.body.users;
+  logout(req.body.name)
 
   res.json({ status: 'ok' });
 });

@@ -7,7 +7,7 @@ const Message = props => {
       {
         props.type.startsWith('system') ?
           <span className="msg-system">
-            User <strong>{ props.name }</strong> has joined the chat
+            User <strong>{ props.name }</strong> has { props.type.match(/\w+\/\w+-(.+)/)[1] } the chat
           </span>
           :
           <span>{ props.text }</span>

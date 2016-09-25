@@ -63,16 +63,16 @@ class Chat extends Component {
         <Header
           name={name}
           logout={ () => {
-            const newUsers = users.filter(user => user.name !== name);
-            this.setState({ name: '', users: newUsers });
             fetch('http://localhost:8080/logout', {
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
               },
               method: 'POST',
-              body: JSON.stringify({ users: newUsers })
+              body: JSON.stringify({ name })
             });
+
+            this.setState({ name: '' });
           } }
         />
         <Userlist users={users} currentName={name} />
