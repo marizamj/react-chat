@@ -10,7 +10,7 @@ class Userlist extends Component {
     return <div className="userlist">
       Users online:
       <ul className="userlist__ul">
-        {this.props.users.map(user =>
+        {this.props.users.sort((a, b) => b.name === this.props.currentName).map(user =>
           <User
             isStrong={user.name === this.props.currentName}
             name={user.name}
