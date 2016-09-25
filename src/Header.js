@@ -3,15 +3,9 @@ import React, { Component } from 'react';
 import { isNameValid, isRepeat } from './helpers';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
+  state = { hint: 'hide', error: '' };
 
-    this.state = { hint: 'hide', error: '' };
-
-    this.setError = this.setError.bind(this);
-  }
-
-  setError(text) {
+  setError = text => {
     this.setState({ hint: 'hide' });
     setTimeout(() => {
       this.setState({
@@ -19,6 +13,12 @@ class Header extends Component {
         error: text
       });
     }, 50);
+  };
+
+  componentDidMount() {
+    window.onbeforeunload = (e) => {
+      this.props.logout();
+    }
   }
 
   render() {
