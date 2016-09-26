@@ -13,7 +13,7 @@ class Chat extends Component {
   }
 
   updateChat = () => {
-    fetch(`http://localhost:8080/?from=${this.state.name}`)
+    fetch(`http://192.168.0.14:8080/?from=${this.state.name}`)
       .then(res => res.json())
       .then(json => {
         this.setState({ ...json });
@@ -29,7 +29,7 @@ class Chat extends Component {
   }
 
   render() {
-    const { name, users, messages } = this.state;
+    const { name, users, messages, token } = this.state;
 
     if (!name) {
       return <Header
@@ -48,13 +48,15 @@ class Chat extends Component {
             messages: [ newMsg, ...messages ]
           });
 
-          fetch('http://localhost:8080/login', {
+          fetch('http://192.168.0.14:8080/login', {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             method: 'POST',
             body: JSON.stringify({ newUser: { name }, newMsg })
+          }).then(res => res.json()).then(json => {
+            this.setState({ token: json.token });
           });
       } } />
     }
@@ -64,13 +66,13 @@ class Chat extends Component {
         <Header
           name={name}
           logout={ () => {
-            fetch('http://localhost:8080/logout', {
+            fetch('http://192.168.0.14:8080/logout', {
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
               },
               method: 'POST',
-              body: JSON.stringify({ name })
+              body: JSON.stringify({ token })
             });
 
             this.setState({ name: '' });
@@ -83,18 +85,22 @@ class Chat extends Component {
               type: 'chat',
               text,
               author: name,
-              date: new Date().valueOf()
+              date: new Date().valueOf(),
             };
-            this.setState({ messages: [ newMsg, ...messages ] });
 
-            fetch('http://localhost:8080/new-message', {
+            fetch('http://192.168.0.14:8080/new-message', {
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
               },
               method: 'POST',
-              body: JSON.stringify({ newMsg })
+              body: JSON.stringify({ newMsg, token })
+            }).then(res => res.json()).then(json => {
+              if (json.status === 'ok') {
+                this.setState({ messages: [ newMsg, ...messages ] });
+              }
             });
+
           }}
         />
       </div>

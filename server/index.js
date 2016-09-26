@@ -4,10 +4,15 @@ const bodyParser = require('body-parser');
 const multer  = require('multer');
 const upload = multer();
 const morgan = require('morgan');
+const uuid = require('uuid');
 
 const app = express();
 
+// { name: timeout, ... }
 const timeouts = {};
+
+// { token: name, ... }
+const tokens = {};
 
 const chat = {
   users: [ { name: 'test' } ],
@@ -17,7 +22,7 @@ const chat = {
 };
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: [ 'http://192.168.0.14:3000', 'http://localhost:3000' ],
   methods: 'GET,POST',
   optionsSuccessStatus: 200
 };
@@ -66,22 +71,44 @@ app.post('/login', upload.array(), cors(corsOptions), function(req, res) {
     logout(user.name);
   }, 15000);
 
+  const token = uuid.v1();
+  tokens[token] = user.name;
+
   chat.users.push(user);
   chat.messages.unshift(req.body.newMsg);
 
-  res.json({ status: 'ok' });
+  res.json({ token });
 });
 
 app.post('/logout', upload.array(), cors(corsOptions), function(req, res) {
-  logout(req.body.name)
+  const token = req.body.token;
 
-  res.json({ status: 'ok' });
+  if (token && tokens[token]) {
+    logout(tokens[token]);
+
+    res.json({ status: 'ok' });
+  } else {
+    console.log('Bad request');
+    res.json({ status: 'false' });
+  }
 });
 
 app.post('/new-message', upload.array(), cors(corsOptions), function(req, res) {
-  chat.messages.unshift(req.body.newMsg);
+  const token = req.body.token;
+  const { type, text, date } = req.body.newMsg;
 
-  res.json({ status: 'ok' });
+  if (token && tokens[token]) {
+    const author = tokens[token];
+
+    const newMessage = { type, text, date, author };
+
+    chat.messages.unshift(newMessage);
+
+    res.json({ status: 'ok' });
+  } else {
+    console.log('Bad request');
+    res.json({ status: 'false' });
+  }
 });
 
 app.listen(8080, function () {
